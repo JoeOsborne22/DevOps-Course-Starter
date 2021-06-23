@@ -26,12 +26,14 @@
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
-      <ol class="list-group mb-4">
+      <ul class="list-group mb-4" style="list-style-type:none;">
         <!-- List the todo items here -->
         {% for item in list %}
-          <li>{{item.title}} - {{item.status}}</li>
+        <li> 
+          <b>{{item.id}}</b>. {{item.title}} - <span {% if item.status == 'Completed' %} style="background-color:#00FF00" {% else %} style="background-color:#ff5959" {% endif %}>{{item.status}}</span>
+        </li>
         {% endfor %}
-      </ol>
+      </ul>
     </div>
   </div>
 

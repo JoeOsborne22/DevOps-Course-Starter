@@ -1,3 +1,4 @@
+from operator import itemgetter
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -11,8 +12,9 @@ app.config.from_object(Config)
 
 @app.route('/')
 def index():
-    items=session_items.get_items()
+    items=(sorted(session_items.get_items(), key=itemgetter('status'),reverse=True))
     return render_template('index.html',list=items)
+
 
 @app.route('/add', methods=['POST', 'GET'])
 def add_item():
@@ -30,14 +32,14 @@ def alter_item():
         except:
             user_id=0
         if (user_id > 0):
-            item=session_items.get_item(user_id)
-            item['status']='Completed'
-            session_items.save_item(item)
+            item=session_items.get_item(str(user_id))
+            if not item == None:
+                item['status']='Completed'
+                session_items.save_item(item)
     return redirect("/")
 
 @app.route('/rem', methods=['POST', 'GET'])
 def remove_item():
-    print("Remove item")
     if request.method == 'POST':
         try:
             user_id=int(request.form.get('item_id'))
@@ -45,8 +47,11 @@ def remove_item():
             user_id=0
         if (user_id > 0):
             item=session_items.get_item(user_id)
-        print (item)
-        #TODO Need function to remove item
+            session_items.remove_item(item)
+        newItems=session_items.get_items()
+        for item in newItems:
+            item['id']=newItems.index(item)+1
+            session_items.save_item(item)
     return redirect("/")
 
 
