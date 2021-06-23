@@ -7,34 +7,40 @@
     <p class="lead">Just another to-do app.</p>
   </div>
 
+  <div class="row m-1 p-3">
+    <div class="col col-11 mx-auto">
+        <div class="row bg-white rounded shadow-sm p-2 add-todo-wrapper align-items-center justify-content-center ">
+          <div class="col">
+              <form action="/add">
+              <input class="form-control form-control-lg border-10 add-todo-input bg-transparent rounded" type="text" placeholder="Add new .."id="iname" name="item_name">
+          </div>
+          <div class="col-auto px-0 mx-0 mr-2">
+              <button type="submit" class="btn btn-primary" formmethod="post">Add</button>
+          </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<div class="p-2 mx-4 border-black-25 border-bottom"></div>
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
-      <ul class="list-group mb-4">
+      <ol class="list-group mb-4">
         <!-- List the todo items here -->
         {% for item in list %}
-          <li>{{item.title}}</li>
+          <li>{{item.title}} - {{item.status}}</li>
         {% endfor %}
-      </ul>
+      </ol>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#addItemForm" aria-expanded="false" aria-controls="addItemForm">
-        Add New Item
-      </button>
-
-      <div class="collapse" id="addItemForm">
-        <div class="card card-body">
-          Fill in below form to add a new item.
-          <form action="/add">
-            <label for="fname">Item title:</label><br>
-            <input type="text" id="iname" name="item_name"><br><br>
-            <input type="submit" formmethod="post" value="Submit">
-          </form>
-      </div>
-    </div>
-
+      <form action="/mark">
+        <input class="border-10 add-item-id bg-transparent rounded" type="text" placeholder="Item Number .."id="idname" name="item_id">
+        <button class="btn btn-success" type="submit" formmethod="post" formaction="/mark">Mark Item as 'Complete'</button>
+        <button class="btn btn-danger" type="submit" formmethod="post" formaction="/rem">Remove Item</button>
+      </form>
   </div><br><br>
 {% endblock %}
