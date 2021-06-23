@@ -18,4 +18,23 @@
       </ul>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#addItemForm" aria-expanded="false" aria-controls="addItemForm">
+        Add New Item
+      </button>
+
+      <div class="collapse" id="addItemForm">
+        <div class="card card-body">
+          Fill in below form to add a new item.
+          <form action="/add">
+            <label for="fname">Item title:</label><br>
+            <input type="text" id="iname" name="item_name"><br><br>
+            <input type="submit" formmethod="post" value="Submit">
+          </form>
+      </div>
+    </div>
+
+  </div><br><br>
 {% endblock %}
