@@ -29,20 +29,18 @@
       <ul class="list-group mb-4" style="list-style-type:none;">
         <!-- List the todo items here -->
         {% for item in list %}
-        <li> 
-          <b>{{item.id}}</b>. {{item.title}} - <span {% if item.status == 'Completed' %} style="background-color:#00FF00" {% else %} style="background-color:#ff5959" {% endif %}>{{item.status}}</span>
+        <li>
+          <form action="/mark"> 
+            {{item.title}} - <span {% if item.status == 'Completed' %} style="background-color:#00FF00" {% else %} style="background-color:#ff5959" {% endif %}>{{item.status}}</span>
+            <button class="btn btn-success" type="submit" formmethod="post" formaction="/mark" value={{item.id}} name="item_id">Mark Item as 'Complete'</button>
+            <button class="btn btn-danger" type="submit" formmethod="post" formaction="/rem" value={{item.id}} name="item_id">Remove Item</button><br><br>
+            <form action="/mark">
+          </form>
         </li>
         {% endfor %}
       </ul>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <form action="/mark">
-        <input class="border-10 add-item-id bg-transparent rounded" type="text" placeholder="Item Number .."id="idname" name="item_id">
-        <button class="btn btn-success" type="submit" formmethod="post" formaction="/mark">Mark Item as 'Complete'</button>
-        <button class="btn btn-danger" type="submit" formmethod="post" formaction="/rem">Remove Item</button>
-      </form>
-  </div><br><br>
+
 {% endblock %}
