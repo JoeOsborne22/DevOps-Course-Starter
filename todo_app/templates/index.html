@@ -31,8 +31,10 @@
         {% for item in list %}
         <li>
           <form action="/mark"> 
-            {{item.title}} - <span {% if item.status == 'Completed' %} style="background-color:#00FF00" {% else %} style="background-color:#ff5959" {% endif %}>{{item.status}}</span>
-            <button class="btn btn-success" type="submit" formmethod="post" formaction="/mark" value={{item.id}} name="item_id">Mark Item as 'Complete'</button>
+            {{item.title}} - <span {% if (item.status == 'Completed') or (item.status == 'Done') %} style="background-color:#00FF00" {% elif item.status == 'To Do' %} style="background-color:#ff5959" {% else %} style="background-color:#fcff59" {% endif %}>{{item.status}}</span>
+            <button class="btn btn-warning" type="submit" formmethod="post" formaction="/mark" value="{{item.id}};Doing" name="item_id" >In Progress</button>
+            <button class="btn btn-success" type="submit" formmethod="post" formaction="/mark" value="{{item.id}};Done" name="item_id" >Complete</button>
+            <button class="btn btn-primary" type="submit" formmethod="post" formaction="/mark" value="{{item.id}};To Do" name="item_id" >To Do</button>
             <button class="btn btn-danger" type="submit" formmethod="post" formaction="/rem" value={{item.id}} name="item_id">Remove Item</button><br><br>
             <form action="/mark">
           </form>
