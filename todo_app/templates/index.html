@@ -11,8 +11,11 @@
     <div class="col col-11 mx-auto">
         <div class="row bg-white rounded shadow-sm p-2 add-todo-wrapper align-items-center justify-content-center ">
           <div class="col">
-              <form action="/add">
-              <input class="form-control form-control-lg border-10 add-todo-input bg-transparent rounded" type="text" placeholder="Add new .."id="iname" name="item_name">
+        <form action="/add">
+              <h2>Add New Item</h2>
+              <input class="form-control form-control-lg border-10 add-todo-input bg-transparent rounded" type="text" placeholder="Ttile .."id="iname" name="item_name">
+              <input class="form-control form-control-lg border-10 add-todo-input bg-transparent rounded" type="text" placeholder="Description .."id="idesc" name="item_desc">
+              <input class="form-control form-control-lg border-10 add-todo-input bg-transparent rounded da" type="date" placeholder="Due date .."id="idue" name="item_due">
           </div>
           <div class="col-auto px-0 mx-0 mr-2">
               <button type="submit" class="btn btn-primary" formmethod="post">Add</button>
@@ -25,20 +28,29 @@
 <div class="p-2 mx-4 border-black-25 border-bottom"></div>
   <div class="row">
     <div class="col-md-12">
-      <h2>Items</h2>
+      <table>
+        <tr>
+          <th>Title<form action="/sort"><button style="background-color:#535252" type="submit" class="btn btn-primary" formmethod="post" formaction="/sort" value="title" name="sortBy">Sort</button></form></th>
+          <th>Due Date</th>
+          <th>Status<form action="/sort"><button style="background-color:#535252" type="submit" class="btn btn-primary" formmethod="post" formaction="/sort" value="status" name="sortBy">Sort</button></form></th>
+          <th>Action<form action="/sort"><button style="background-color:#535252" type="submit" class="btn btn-primary" formmethod="post" formaction="/sort" value="reset" name="sortBy">Clear Sort</button></form></th>
+        </tr>
       <ul class="list-group mb-4" style="list-style-type:none;">
         <!-- List the todo items here -->
         {% for item in list %}
-        <li>
           <form action="/mark"> 
-            {{item.title}} - <span {% if (item.status == 'Completed') or (item.status == 'Done') %} style="background-color:#00FF00" {% elif item.status == 'To Do' %} style="background-color:#ff5959" {% else %} style="background-color:#fcff59" {% endif %}>{{item.status}}</span>
-            <button class="btn btn-warning" type="submit" formmethod="post" formaction="/mark" value="{{item.id}};Doing" name="item_id" >In Progress</button>
-            <button class="btn btn-success" type="submit" formmethod="post" formaction="/mark" value="{{item.id}};Done" name="item_id" >Complete</button>
-            <button class="btn btn-primary" type="submit" formmethod="post" formaction="/mark" value="{{item.id}};To Do" name="item_id" >To Do</button>
-            <button class="btn btn-danger" type="submit" formmethod="post" formaction="/rem" value={{item.id}} name="item_id">Remove Item</button><br><br>
+            <tr>
+              <td>{{item.title}}</td>
+              <td><span {% if (item.duePast) and not ((item.status == 'Completed') or (item.status == 'Done'))%} style="background-color:#ff5959" {% endif %}>{{item.due}}</span></td>
+              <td><span {% if (item.status == 'Completed') or (item.status == 'Done') %} style="background-color:#00FF00" {% elif item.status == 'To Do' %} style="background-color:#ff5959" {% else %} style="background-color:#fcff59" {% endif %}>{{item.status}}</span></td>
+              <td><button class="btn btn-warning" type="submit" formmethod="post" formaction="/mark" value="{{item.id}};Doing" name="item_id" >In Progress</button>
+                <button class="btn btn-success" type="submit" formmethod="post" formaction="/mark" value="{{item.id}};Done" name="item_id" >Complete</button>
+                <button class="btn btn-primary" type="submit" formmethod="post" formaction="/mark" value="{{item.id}};To Do" name="item_id" >To Do</button>
+                <button class="btn btn-danger" type="submit" formmethod="post" formaction="/rem" value={{item.id}} name="item_id">Remove</button><br><br></td>
+            </tr>
             <form action="/mark">
           </form>
-        </li>
+        
         {% endfor %}
       </ul>
     </div>
