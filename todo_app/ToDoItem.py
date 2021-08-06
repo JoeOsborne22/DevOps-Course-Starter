@@ -14,9 +14,9 @@ class ToDoItem:
         
         #Set duePast if there is a due date in the past of today
         now=(datetime.now()).date()
-        try:
-            cardDate=(datetime.fromisoformat(str(json["due"])[:-1])).date()
-        except:
+        if json["due"]:
+            cardDate=(datetime.fromisoformat(json["due"][:-1])).date()
+        else:
             #Used when no due date is given, we default to tomorrow so highlight rule is not executed
             cardDate=now + timedelta(days=1)
         self.duePast = now >= cardDate
