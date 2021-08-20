@@ -3,7 +3,7 @@ from todo_app.viewModel import taskCards
 from flask import Flask, render_template, request, redirect, session
 import os,requests
 from todo_app.ToDoItem  import  ToDoItem
-
+from todo_app.createApp import createApp
 
 # Set app variables
 #load_dotenv()
@@ -11,7 +11,7 @@ key=os.getenv('TRELLO_KEY')
 token=os.getenv('TRELLO_TOKEN')
 trelloBoardID=os.getenv('TRELLO_BOARD_ID')
 trelloBaseList=os.getenv('TRELLO_BASE_LIST') # will place new cards in To Do list
-app = Flask(__name__)
+app=createApp()
 app.secret_key=os.getenv('TODO_APP_SECRET_KEY')
 
 

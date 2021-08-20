@@ -1,4 +1,3 @@
-from todo_app.app import app
 from todo_app.viewModel import taskCards
 from todo_app.ToDoItem  import  ToDoItem
 import pytest 
@@ -61,8 +60,11 @@ def test_not_show_all_done_if_more_than_three():
 		ToDoItem(statusList,{'id':2, 'idList':1,'name':'task 2','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
 		ToDoItem(statusList,{'id':3, 'idList':2,'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
 		ToDoItem(statusList,{'id':5, 'idList':2,'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem(statusList,{'id':5, 'idList':2,'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem(statusList,{'id':5, 'idList':2,'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"})
+		ToDoItem(statusList,{'id':6, 'idList':2,'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem(statusList,{'id':7, 'idList':2,'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem(statusList,{'id':8, 'idList':2,'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem(statusList,{'id':9, 'idList':2,'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+
 	]	
 	view = taskCards(items)
 	assert view.should_show_all_done_items is False
