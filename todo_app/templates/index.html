@@ -59,26 +59,26 @@
 <!-- IF statements are used here to determine which tables to show - this reduces clutter on screen -->
 <!-- Only display the ToDo table if we have items to display -->
   {% if viewModel.todo_items|count > 0 %}
-    {{ display_table('To Do', viewModel.todo_items, 'to-do-section') }}
+    {{ display_table('To Do', viewModel.todo_items, 'todo') }}
   {% endif %}
 
 <!-- Only display the Doing table if we have items to display-->
   {% if viewModel.doing_items|count > 0 %}
-    {{ display_table('Doing', viewModel.doing_items, 'doing-section') }}
+    {{ display_table('Doing', viewModel.doing_items, 'doing') }}
   {% endif %}
 
 <!-- Only display all the done items if we have 3 or less -->
   {% if viewModel.should_show_all_done_items %}
-    {{ display_table('Done', viewModel.done_items, 'done-section') }}
+    {{ display_table('Done', viewModel.done_items, 'done') }}
   {% else %}
   <!-- Only display the recently done items if we have any-->
     {% if viewModel.done_items|count > 0 %}
-      {{ display_table('Recently Completed', viewModel.recent_done_items, 'recently-done-section') }}
+      {{ display_table('Recently Completed', viewModel.recent_done_items, 'recently done') }}
     {% endif %}  
     <!-- Display all other done items within a details tag, this will hide the table within a drop down -->
     <details>
       <summary style="font-size:30px">Historically completed</summary>
-      {{ display_table('', viewModel.older_done_items, 'older-done-section') }}
+      {{ display_table('', viewModel.older_done_items, 'older done') }}
     </details><br>
   {% endif %}
 {% endblock %}
