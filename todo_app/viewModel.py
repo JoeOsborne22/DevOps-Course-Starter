@@ -5,7 +5,6 @@ class taskCards:
 
     @property
     def items(self):
-        
         return self._items
 
     @property
@@ -24,8 +23,6 @@ class taskCards:
                 list.append(item)
         return list
         
-
-
     @property
     def done_items(self):
         list = []
@@ -36,7 +33,7 @@ class taskCards:
         
     @property
     def should_show_all_done_items(self):
-        shouldShow = len(self.done_items) <=3
+        shouldShow = len(self.done_items) <=5
         return shouldShow
 
     @property
