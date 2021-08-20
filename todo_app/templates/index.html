@@ -1,6 +1,37 @@
 {% extends "layout.html" %}
 {% block title %}To-Do App{% endblock %}
 
+<!-- Macro to hold table creation, this allows for the same table to be created and displayed on multiple occassions -->
+{% macro display_table(title, items, id) -%}
+<div class="row">
+  <div class="col-md-12" data-test-id="{{ id }}">
+    <h2>{{ title }}</h2>
+<table>
+  <tr>
+    <th>Title<form action="/sort"><button style="background-color:#535252" type="submit" class="btn btn-primary" formmethod="post" formaction="/sort" value="title" name="sortBy">Sort</button></form></th>
+    <th>Due Date</th>
+    <th>Status<form action="/sort"><button style="background-color:#535252" type="submit" class="btn btn-primary" formmethod="post" formaction="/sort" value="status" name="sortBy">Sort</button></form></th>
+    <th>Action<form action="/sort"><button style="background-color:#535252" type="submit" class="btn btn-primary" formmethod="post" formaction="/sort" value="reset" name="sortBy">Clear Sort</button></form></th>
+  </tr>
+  <!-- List the todo items here -->
+  {% for item in items %}
+      <tr>
+        <td>{{item.title}}</td>
+        <td><span {% if (item.duePast) and not ((item.status == 'Completed') or (item.status == 'Done'))%} style="background-color:#ff5959" {% endif %}>{{item.due}}</span></td>
+        <td><span {% if (item.status == 'Completed') or (item.status == 'Done') %} style="background-color:#00FF00" {% elif item.status == 'To Do' %} style="background-color:#ff5959" {% else %} style="background-color:#fcff59" {% endif %}>{{item.status}}</span></td>
+        <td><form action="/mark">
+          <button class="btn btn-warning" type="submit" formmethod="post" formaction="/mark" value="Doing" name="item_state" >In Progress</button>
+          <button class="btn btn-success" type="submit" formmethod="post" formaction="/mark" value="Done" name="item_state" >Complete</button>
+          <button class="btn btn-primary" type="submit" formmethod="post" formaction="/mark" value="To Do" name="item_state" >To Do</button>
+          <button class="btn btn-danger" type="submit" formmethod="post" formaction="/rem" value="Delete" name="item_state">Remove</button>
+          <input type="hidden" name="item_id" value="{{item.id}}"><br><br></td>
+        </form>
+      </tr>
+  {% endfor %} 
+</table><br>
+{%- endmacro %}
+
+<!-- Start of our App being displayed -->
 {% block content %}
   <div class="jumbotron">
     <h1 class="display-4">To-Do App</h1>
@@ -25,32 +56,29 @@
     </div>
 </div>
 
-<div class="p-2 mx-4 border-black-25 border-bottom"></div>
-  <div class="row">
-    <div class="col-md-12">
-      <table>
-        <tr>
-          <th>Title<form action="/sort"><button style="background-color:#535252" type="submit" class="btn btn-primary" formmethod="post" formaction="/sort" value="title" name="sortBy">Sort</button></form></th>
-          <th>Due Date</th>
-          <th>Status<form action="/sort"><button style="background-color:#535252" type="submit" class="btn btn-primary" formmethod="post" formaction="/sort" value="status" name="sortBy">Sort</button></form></th>
-          <th>Action<form action="/sort"><button style="background-color:#535252" type="submit" class="btn btn-primary" formmethod="post" formaction="/sort" value="reset" name="sortBy">Clear Sort</button></form></th>
-        </tr>
-        <!-- List the todo items here -->
-        {% for item in list %}
-            <tr>
-              <td>{{item.title}}</td>
-              <td><span {% if (item.duePast) and not ((item.status == 'Completed') or (item.status == 'Done'))%} style="background-color:#ff5959" {% endif %}>{{item.due}}</span></td>
-              <td><span {% if (item.status == 'Completed') or (item.status == 'Done') %} style="background-color:#00FF00" {% elif item.status == 'To Do' %} style="background-color:#ff5959" {% else %} style="background-color:#fcff59" {% endif %}>{{item.status}}</span></td>
-              <td><form action="/mark">
-                <button class="btn btn-warning" type="submit" formmethod="post" formaction="/mark" value="Doing" name="item_state" >In Progress</button>
-                <button class="btn btn-success" type="submit" formmethod="post" formaction="/mark" value="Done" name="item_state" >Complete</button>
-                <button class="btn btn-primary" type="submit" formmethod="post" formaction="/mark" value="To Do" name="item_state" >To Do</button>
-                <button class="btn btn-danger" type="submit" formmethod="post" formaction="/rem" value="Delete" name="item_state">Remove</button>
-                <input type="hidden" name="item_id" value="{{item.id}}"><br><br></td>
-              </form>
-            </tr>
-        {% endfor %} 
-      </table><br>
-    </div>
-  </div>
+<!-- IF statements are used here to determine which tables to show - this reduces clutter on screen -->
+<!-- Only display the ToDo table if we have items to display -->
+  {% if viewModel.todo_items|count > 0 %}
+    {{ display_table('To Do', viewModel.todo_items, 'to-do-section') }}
+  {% endif %}
+
+<!-- Only display the Doing table if we have items to display-->
+  {% if viewModel.doing_items|count > 0 %}
+    {{ display_table('Doing', viewModel.doing_items, 'doing-section') }}
+  {% endif %}
+
+<!-- Only display all the done items if we have 3 or less -->
+  {% if viewModel.should_show_all_done_items %}
+    {{ display_table('Done', viewModel.done_items, 'done-section') }}
+  {% else %}
+  <!-- Only display the recently done items if we have any-->
+    {% if viewModel.done_items|count > 0 %}
+      {{ display_table('Recently Completed', viewModel.recent_done_items, 'recently-done-section') }}
+    {% endif %}  
+    <!-- Display all other done items within a details tag, this will hide the table within a drop down -->
+    <details>
+      <summary style="font-size:30px">Historically completed</summary>
+      {{ display_table('', viewModel.older_done_items, 'older-done-section') }}
+    </details><br>
+  {% endif %}
 {% endblock %}

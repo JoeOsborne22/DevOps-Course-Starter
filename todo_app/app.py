@@ -1,7 +1,9 @@
 from operator import attrgetter
+from todo_app.viewModel import taskCards
 from flask import Flask, render_template, request, redirect, session
 import os,requests
 from todo_app.ToDoItem  import  ToDoItem
+
 
 # Set app variables
 #load_dotenv()
@@ -28,8 +30,8 @@ def index():
     cards=getTrelloCards(trelloBoardID, key, token)
     if "sortAttr" in session:
         cards=sorted(cards, key=attrgetter(session.get('sortAttr')))
-    
-    return render_template('index.html',list=cards)
+    item_view_model= taskCards(cards)
+    return render_template('index.html',viewModel=item_view_model)
 
 # Used to add new item
 @app.route('/add', methods=['POST'])
