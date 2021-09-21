@@ -61,7 +61,7 @@ Then generate an API key and token by following the instructions here - https://
 This to do app makes use of pytest for running test cases. Running the tests can be done in a few different ways shown below
 
 while being in the project directory (the test foleder should be visible or you should be within this dir) you can run the below command.
-This will run pytest on all available modaules/scrits
+This will run pytest on all available modules/scrits
     poetry run pytest 
 
 Run tests for a particular module/script, cd into the dir where the file exists and run the following
@@ -75,6 +75,8 @@ say we are in <project>/<todo_app> and our tests are in <project>/<tests>, we ca
 Lastly you can Run tests by keyword expressions
     poetry run pytest -k "<keyword>"
     e.g: poetry run pytest -k "category_split"
+
+FYI - The E2E test has a dependency on having Firefox installed (and Geckodriver)
 
 You can find more information here:https://docs.pytest.org/en/6.2.x/usage.html  
 

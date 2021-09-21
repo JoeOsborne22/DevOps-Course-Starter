@@ -23,6 +23,8 @@ def test_items_category_split():
 	for card in view.todo_items:
     		todo_items_tasks.append(card.title)
 	assert todo_items_tasks == ['task 1']
+	assert len(view.todo_items) == 1
+	assert view.todo_items[0].title == 'task 1'
 
 	doing_items_tasks=[]
 	for card in view.doing_items:

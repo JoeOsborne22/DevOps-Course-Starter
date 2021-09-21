@@ -38,10 +38,7 @@ def mockResponse(method, url, params):
         raise_for_status=None
 
         mock_resp = Mock()
-        # mock raise_for_status call w/optional error
-        mock_resp.raise_for_status = Mock()
-        if raise_for_status:
-            mock_resp.raise_for_status.side_effect = raise_for_status
+
         # set status code and content
         mock_resp.status_code = status
         mock_resp.content = content

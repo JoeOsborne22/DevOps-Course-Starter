@@ -19,6 +19,8 @@ def create_app():
     app.secret_key=os.getenv('TODO_APP_SECRET_KEY')
 
     # Set app variables
+    # After completing e2e tests it has become apparent that setting a 'Base List' is not ideal if the app needs to use more than 1 board
+    # As this project focuses on just 1 board it is fine but worth noting for future projects
     key=os.getenv('TRELLO_KEY')
     token=os.getenv('TRELLO_TOKEN')
     trelloBoardID=os.getenv('TRELLO_BOARD_ID')
