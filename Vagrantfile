@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
     poetry install 
     echo 'poetry installed'
     pip install gunicorn
-    echo 'poetry installed'
+    echo 'gunicorn installed'
     echo 'Start app'
     nohup poetry run flask run --host=0.0.0.0 > TODO_app.log 2>&1 & 
     echo 'App Running....'
