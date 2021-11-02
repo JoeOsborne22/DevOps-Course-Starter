@@ -124,3 +124,6 @@ geckodriver.*
 
 ### Vagrant
 .vagrant
+
+### Logfiles
+*.log

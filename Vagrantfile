@@ -38,14 +38,22 @@ Vagrant.configure("2") do |config|
 
   SHELL
 
+  $run_app = <<-SCRIPT
+    cd /vagrant 
+    echo $pwd
+    poetry install 
+    echo 'poetry installed'
+    pip install gunicorn
+    echo 'poetry installed'
+    echo 'Start app'
+    nohup poetry run flask run --host=0.0.0.0 > TODO_app.log 2>&1 & 
+    echo 'App Running....'
+    SCRIPT
+
   config.trigger.after :up do |trigger|
     trigger.name = "Launching App"
     trigger.info = "Running the TODO app setup script"
-    trigger.run_remote = {privileged: false, inline: "
-      cd /vagrant &&
-      poetry install &&
-      poetry run nohup flask run --host=0.0.0.0 > log.txt 2>&1 &
-    "}
+    trigger.run_remote = {privileged: false, inline: $run_app}
   end
 end
 
