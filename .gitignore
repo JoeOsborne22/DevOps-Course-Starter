@@ -121,3 +121,9 @@ env/
 
 ### web drivers 
 geckodriver.*
+
+### Vagrant
+.vagrant
+
+### Logfiles
+*.log
