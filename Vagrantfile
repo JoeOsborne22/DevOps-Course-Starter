@@ -34,7 +34,6 @@ Vagrant.configure("2") do |config|
 
     echo 'export PATH="$HOME/.poetry/bin:$PATH"' >> ~/.profile
     echo 'export PATH="/vagrant:$PATH"' >> ~/.profile
-    source $HOME/.poetry/env
 
   SHELL
 

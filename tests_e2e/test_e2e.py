@@ -34,11 +34,14 @@ def deleteTrelloBoard(boardId, key, token):
 
 @pytest.fixture(scope='module')
 def app_with_temp_board():
+    # Load dotenv file before being used/referenced
+    file_path = find_dotenv('.env')
+    load_dotenv(file_path, override=True)
+
     # Create the new board & update the board id environment variable
     board = (createTrelloBoard('Selenium_Test_Board'))
     board_id = board["id"]
-    file_path = find_dotenv('.env')
-    load_dotenv(file_path, override=True)
+
     key=os.getenv('TRELLO_KEY')
     token=os.getenv('TRELLO_TOKEN')
     os.environ['TRELLO_BOARD_ID'] = board_id
