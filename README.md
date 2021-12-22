@@ -80,3 +80,26 @@ FYI - The E2E test has a dependency on having Firefox installed (and Geckodriver
 
 You can find more information here:https://docs.pytest.org/en/6.2.x/usage.html  
 
+## Using Docker
+This application comes with a Dockerfile for easy deploying to a container this allows anyone to pick up the app and get it running in moments.
+## You will need to be in the root dir of the todo_app
+- Build the Docker image
+docker build --tag todo_app . 
+
+- Build for a particular Env (prod, development, test available)
+docker build --target test --tag my-test-image .
+docker build --target development --tag todo-app:dev . 
+docker build --target production --tag todo-app:prod .
+
+- Run the docker image, this uses an env file, publishes ports for connectivity and gives thw image tag <todo_app>
+docker run --publish 5000:5000 --env-file .env todo_app
+docker run --env-file ./.env -p 5000:5000 --mount type=bind,source="$(pwd)"/todo_app,target=/app/todo_app todo-app:dev
+
+- Run docker image tests (unit+integration)
+docker run -e TRELLO_KEY=testTrelloKey  -e TRELLO_TOKEN=testTrelloToken -e TRELLO_BOARD_ID=testTest my-test-image tests
+
+- or to utilise the .env.test file:
+docker run --env-file .env.test my-test-image tests
+
+- Run docker e2e tests
+TODO

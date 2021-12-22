@@ -1,5 +1,20 @@
 name: Continuous Integration
-on: [push]
+on: 
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'Vagrantfile'
+      - 'documentation/**'
+
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - 'README.md'
+      - 'Vagrantfile'
+      - 'documentation/**'
+
+
 jobs:
   build:
     name: Build and test
