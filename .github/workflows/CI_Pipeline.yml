@@ -15,16 +15,13 @@ on:
       - 'documentation/**'
 
 
-jobs:
-  setup:
-    name: Setup Geckodriver for e2e tests
-    steps:
-    - uses: browser-actions/setup-geckodriver@latest
-    - run: geckodriver --version
+jobs:    
   build:
     name: Build and test
     runs-on: ubuntu-latest
     steps:
+    - uses: browser-actions/setup-geckodriver@latest
+    - run: geckodriver --version
     - uses: actions/checkout@v2
     - run: docker build --target test --tag my-test-image .
     - run: docker run --env-file .env.test  my-test-image tests
