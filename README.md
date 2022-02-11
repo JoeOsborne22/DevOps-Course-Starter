@@ -102,4 +102,4 @@ docker run -e TRELLO_KEY=testTrelloKey  -e TRELLO_TOKEN=testTrelloToken -e TRELL
 docker run --env-file .env.test my-test-image tests
 
 - Run docker e2e tests
-TODO
+docker run -e TRELLO_KEY=054a9a4b4c8cfdb666b64c663f18fd89  -e TRELLO_TOKEN=e7c319349957bc643e19d305ef710bc6159e55e18dbd7a7c7dc538ef8cdc09e4 -e TRELLO_BOARD_ID=60fad7c6c463fc540fbffb94 my-test-image tests_e2e

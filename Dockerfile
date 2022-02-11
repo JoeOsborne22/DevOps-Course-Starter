@@ -18,10 +18,6 @@ COPY tests_e2e tests_e2e
 #COPY geckodriver.exe .
 
 
-FROM base as production 
-# Configure for production
-ENTRYPOINT ["gunicorn"  , "--bind", "0.0.0.0:5000", "todo_app.app:create_app()"]
-
 FROM base as development  
 # Configure for local development
 ENTRYPOINT [ "poetry", "run", "flask", "run", "--host=0.0.0.0"]
@@ -29,6 +25,11 @@ ENTRYPOINT [ "poetry", "run", "flask", "run", "--host=0.0.0.0"]
 FROM base as test
 # Configure for running tests
 ENTRYPOINT [ "poetry", "run", "pytest"]
+
+FROM base as production 
+# Configure for production
+ENTRYPOINT ["gunicorn"  , "--bind", "0.0.0.0:5000", "todo_app.app:create_app()"]
+
 
 ENV GECKODRIVER_VER v0.29.1
 # Install the long-term support version of Firefox (and curl if you don't have it already)
