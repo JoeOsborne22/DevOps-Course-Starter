@@ -24,3 +24,17 @@ jobs:
     - run: docker build --target test --tag my-test-image .
     - run: docker run -e TRELLO_KEY=testTrelloKey -e TRELLO_TOKEN=testTrelloToken -e TRELLO_BOARD_ID=testTest my-test-image tests
 
+  deploy:
+    name: Deploy build package to Heroku
+    needs: build
+    rules:
+    - if: {{ github.event_name ==  'push' && github.ref == 'exercise-8' }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2 # Adds a step to checkout the repository code
+    - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "joe-devops-project" #Must be unique in Heroku
+        heroku_email: "josephbwo@hotmail.com"
+        usedocker: true
