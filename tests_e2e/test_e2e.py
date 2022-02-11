@@ -5,6 +5,8 @@ from selenium import webdriver
 import requests
 from todo_app.app import create_app
 from dotenv import find_dotenv,load_dotenv
+from selenium.webdriver.firefox.options import Options
+
 
 def requestJson (method, url, args):
     r = requests.request(method, url, params=args) 
@@ -68,7 +70,9 @@ def app_with_temp_board():
 
 @pytest.fixture(scope='module')
 def driver():
-    with webdriver.Firefox() as driver:
+    opts = Options()
+    opts.headless = True
+    with webdriver.Firefox(options=opts) as driver:
         yield driver
 
 
