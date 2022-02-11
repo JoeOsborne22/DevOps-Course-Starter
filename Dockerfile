@@ -15,7 +15,9 @@ RUN poetry install
 COPY todo_app todo_app
 COPY tests tests
 COPY tests_e2e tests_e2e
-#COPY geckodriver.exe .
+COPY runTodoApp.sh runTodoApp.sh
+RUN chmod +x ./runTodoApp.sh
+
 
 
 FROM base as development  
@@ -28,7 +30,8 @@ ENTRYPOINT [ "poetry", "run", "pytest"]
 
 FROM base as production 
 # Configure for production
-ENTRYPOINT ["gunicorn"  , "--bind", "0.0.0.0:5000", "todo_app.app:create_app()"]
+#ENTRYPOINT ["poetry" ,"run" , "gunicorn"  , "--bind", "0.0.0.0:5000", "todo_app.app:create_app()"]
+ENTRYPOINT ./runTodoApp.sh
 
 
 ENV GECKODRIVER_VER v0.29.1
