@@ -15,12 +15,30 @@ on:
       - 'documentation/**'
 
 
-jobs:
+jobs:    
   build:
     name: Build and test
     runs-on: ubuntu-latest
     steps:
+    - uses: browser-actions/setup-geckodriver@latest
+    - run: geckodriver --version
     - uses: actions/checkout@v2
     - run: docker build --target test --tag my-test-image .
-    - run: docker run -e TRELLO_KEY=testTrelloKey -e TRELLO_TOKEN=testTrelloToken -e TRELLO_BOARD_ID=testTest my-test-image tests
+    - run: docker run --env-file .env.test  my-test-image tests
+    - run: docker run -e TRELLO_KEY=${{secrets.TRELLO_KEY}}  -e TRELLO_TOKEN=${{secrets.TRELLO_TOKEN}} -e TRELLO_BOARD_ID=${{secrets.TRELLO_BOARD_ID}} my-test-image tests_e2e
 
+  deploy:
+    name: Deploy build package to Heroku
+    needs: build
+    if: ${{ github.event_name ==  'push' && github.ref == 'refs/heads/exercise-8' }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2 # Adds a step to checkout the repository code
+    #This action was used for simplicity and conciseness however this action has the inability to specify build options
+    - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action 
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "joe-devops-project" #Must be unique in Heroku
+        heroku_email: "josephbwo@hotmail.com"
+        usedocker: true
+        
