@@ -1,0 +1,26 @@
+name: Continuous Integration
+on: 
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'Vagrantfile'
+      - 'documentation/**'
+
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - 'README.md'
+      - 'Vagrantfile'
+      - 'documentation/**'
+
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: docker build --target test --tag my-test-image .
+    - run: docker run -e TRELLO_KEY=testTrelloKey -e TRELLO_TOKEN=testTrelloToken -e TRELLO_BOARD_ID=testTest my-test-image tests
+
