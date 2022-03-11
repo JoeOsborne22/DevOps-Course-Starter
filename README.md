@@ -106,3 +106,8 @@ docker run -e TRELLO_KEY=<TRELLO_KEY>  -e TRELLO_TOKEN=<TRELLO_TOKEN> -e TRELLO_
 
 - or to utilise the .env file:
 docker run --env-file .env my-test-image tests_e2e
+
+
+## Note as of 2022.03.11(exercise 9) integration with Trello has been terminated and instead replaced with MongoDB
+This app now uses a MongoDB connection and will need the necessary environment variable set up for integration with this form of database.
+Signup to MongoDB: https://www.mongodb.com/try
