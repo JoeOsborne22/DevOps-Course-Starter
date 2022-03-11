@@ -37,7 +37,7 @@ FROM base as test
 # Configure for running tests
 ENTRYPOINT [ "poetry", "run", "pytest"]
 
+#NOTE: This pipeline implicitly relies on this stage being the last one in the Dockerfile
 FROM base as production 
 # Configure for production
-#ENTRYPOINT ["poetry" ,"run" , "gunicorn"  , "--bind", "0.0.0.0:5000", "todo_app.app:create_app()"]
 ENTRYPOINT ./runTodoApp.sh
