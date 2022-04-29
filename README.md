@@ -96,13 +96,10 @@ docker run --publish 5000:5000 --env-file .env todo_app
 docker run --env-file ./.env -p 5000:5000 --mount type=bind,source="$(pwd)"/todo_app,target=/app/todo_app todo-app:dev
 
 - Run docker image tests (unit+integration)
-docker run -e TRELLO_KEY=testTrelloKey  -e TRELLO_TOKEN=testTrelloToken -e TRELLO_BOARD_ID=testTest my-test-image tests
-
-- or to utilise the .env.test file:
 docker run --env-file .env.test my-test-image tests
 
 - Run docker e2e tests
-docker run -e TRELLO_KEY=<TRELLO_KEY>  -e TRELLO_TOKEN=<TRELLO_TOKEN> -e TRELLO_BOARD_ID=<TRELLO_BOARD_ID> my-test-image tests_e2e
+docker run -e MONGO_DB_NAME=<MONGO_DB_NAME> -e MONGO_CONNECT=<MONGO_CONNECT> -e MONGO_COLLECTION_NAME=<MONGO_COLLECTION_NAME> -e MONGO_DEFAULT_STATUS=<MONGO_DEFAULT_STATUS> my-test-image tests_e2e
 
 - or to utilise the .env file:
 docker run --env-file .env my-test-image tests_e2e
