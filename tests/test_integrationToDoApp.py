@@ -19,8 +19,8 @@ def client():
             yield client
 
 
-@patch('requests.request')
-def test_index_page(mock_get_requests, client):
+#@patch('requests.request')
+def test_index_page(client):
     #mock_get_requests.side_effect = mockResponse('test')
 
     addMockData()
@@ -30,9 +30,9 @@ def test_index_page(mock_get_requests, client):
     responseCode = response.status_code
     responseHtml = response.data.decode()
     assert responseCode == 200
-    #assert "testDoingTask" in responseHtml
-    #assert "testDoneTask" in responseHtml
-    #assert "testDoingTask_UID:1548993486125" in responseHtml
+    assert "testDoingTask" in responseHtml
+    assert "testDoneTask" in responseHtml
+    assert "testDoingTask_UID:1548993486125" in responseHtml
 
 
 def addMockData():
@@ -49,51 +49,22 @@ def addMockData():
     return 
 
 
-
-
-
-todoListId=0
-doingListId=1
-doneListId=2
-
-todoItemId=98765
-doingItemId=1248457
-doneItemId=26563728
-
-
-responseListsStub = [{
-        "_id": todoListId,
-        "name": "todo"   
-    },
-    {
-        "_id": doingListId,
-        "name": "Doing",
-    },
-    {
-        "_id": doneListId,
-        "name": "Done"
-    }]
-
-
 responseCardsStub = [
             {
-                "_id": todoItemId,
                 "name": "testDoTask_UID:1548993486146",
-                "idList": todoListId,
+                "idList": "To Do",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             },
             {
-                "_id": doingItemId,
                 "name": "testDoingTask_UID:1548993486125",
-                "idList": doingListId,
+                "idList": "Doing",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             },
             {
-                "_id": doneItemId,
                 "name": "testDoneTask_UID:1548993486114",
-                "idList": doneListId,
+                "idList": "Done",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             }
@@ -102,7 +73,3 @@ responseCardsStub = [
 
 
 
-sample_trello_card = {
-    "id": todoItemId,
-    "name": "testNextTask"
-}
