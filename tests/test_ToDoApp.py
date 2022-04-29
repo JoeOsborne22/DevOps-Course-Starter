@@ -22,7 +22,7 @@ def test_items_category_split():
 	
 	todo_items_tasks=[]
 	for card in view.todo_items:
-    		todo_items_tasks.append(card.title)
+		todo_items_tasks.append(card.title)
 
 	assert todo_items_tasks == ['task 1']
 	assert len(view.todo_items) == 1
@@ -30,12 +30,12 @@ def test_items_category_split():
 
 	doing_items_tasks=[]
 	for card in view.doing_items:
-    		doing_items_tasks.append(card.title)
+			doing_items_tasks.append(card.title)
 	assert doing_items_tasks == ['task 2','task 6']
 
 	done_items_tasks=[]
 	for card in view.done_items:
-    		done_items_tasks.append(card.title)
+			done_items_tasks.append(card.title)
 	assert done_items_tasks == ['task 3','task 5']
 
 
