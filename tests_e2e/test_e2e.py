@@ -2,7 +2,7 @@ import os
 from threading import Thread
 import pytest
 from selenium import webdriver
-import requests
+import requests,pymongo
 from todo_app.app import create_app
 from dotenv import find_dotenv,load_dotenv
 from selenium.webdriver.firefox.options import Options
@@ -15,24 +15,14 @@ def requestJson (method, url, args):
     return r.json()
     
     
-#Function to create trello board
-def createTrelloBoard(boardName):
-    url='https://api.trello.com/1/boards/'
-    params={
-            'key': os.getenv('TRELLO_KEY'),
-            'token': os.getenv('TRELLO_TOKEN'),
-            'name': boardName
-        }
-    
-    res=requestJson("POST",url, params)
-    return res
 
 
-#Function to remove trello board
-def deleteTrelloBoard(boardId, key, token):
-    url='https://api.trello.com/1/boards/'+boardId+'?key='+key+'&token='+token
-    res=requestJson("DELETE",url, {})
-    return res
+#Function to remove selenium table
+def deleteBoard():
+    client=pymongo.MongoClient(str(os.getenv('MONGO_CONNECT')))
+    db = client[os.getenv('MONGO_DB_NAME')]
+    db[str(os.getenv('MONGO_TABLE_NAME'))].drop()
+    return 
 
 @pytest.fixture(scope='module')
 def app_with_temp_board():
@@ -40,19 +30,9 @@ def app_with_temp_board():
     file_path = find_dotenv('.env')
     load_dotenv(file_path, override=True)
 
-    # Create the new board & update the board id environment variable
-    board = (createTrelloBoard('Selenium_Test_Board'))
-    board_id = board["id"]
-
-    key=os.getenv('TRELLO_KEY')
-    token=os.getenv('TRELLO_TOKEN')
-    os.environ['TRELLO_BOARD_ID'] = board_id
+    # Create & update the test DB environment variable, this will create a new board
+    os.environ['MONGO_TABLE_NAME'] = 'Selenium_Test_Board'
     
-    #Hit up the trello board and find the id of the base list 
-    url='https://api.trello.com/1/boards/'+board_id+'/'+'lists'+'?key='+key+'&token='+token
-    res=requestJson("GET",url, {})
-    os.environ['TRELLO_BASE_LIST']= res[0]["id"]
-
     # construct the new application
     app = create_app()
     
@@ -65,7 +45,7 @@ def app_with_temp_board():
     
     # Tear Down
     thread.join(1)
-    deleteTrelloBoard(board_id, key, token)
+    deleteBoard()
 
 
 @pytest.fixture(scope='module')

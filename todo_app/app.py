@@ -1,37 +1,40 @@
 from operator import attrgetter
 from todo_app.viewModel import taskCards
 from flask import Flask, render_template, request, redirect, session
-import os,requests
+import os,requests,pymongo,pprint,datetime
 from todo_app.ToDoItem  import  ToDoItem
+from bson.objectid import ObjectId
 #from todo_app.createApp import createApp
 
-
-# Common function used to request data from URL's
-def requestJson (method, url, args):
-    r = requests.request(method, url, params=args) 
-    r.raise_for_status()
-    print(r.raise_for_status())
-    #Should handle error statuses - TODO
-    return r.json()
 
 def create_app():
     app = Flask(__name__)
     app.secret_key=os.getenv('TODO_APP_SECRET_KEY')
 
     # Set app variables
-    # After completing e2e tests it has become apparent that setting a 'Base List' is not ideal if the app needs to use more than 1 board
-    # As this project focuses on just 1 board it is fine but worth noting for future projects
-    key=os.getenv('TRELLO_KEY')
-    token=os.getenv('TRELLO_TOKEN')
-    trelloBoardID=os.getenv('TRELLO_BOARD_ID')
-    trelloBaseList=os.getenv('TRELLO_BASE_LIST') # will place new cards in To Do list
+    #Setting up connection to MongoDB
+    mongoConnection=os.getenv('MONGO_CONNECT')
+    mongoDB=os.getenv('MONGO_DB_NAME')
+    mongoTable=os.getenv('MONGO_TABLE_NAME')
+    defaultStatus=os.getenv('MONGO_DEFAULT_STATUS')
+    client=pymongo.MongoClient(str(mongoConnection))
+    db = client[mongoDB]
+    todoCards = db[str(mongoTable)]
+    
+    # Map used to determine which function to use when interacting with DB
+    actionMap={
+        'POST':todoCards.insert_one,
+        'PUT':todoCards.update_one,
+        'DELETE':todoCards.delete_one
+    }
 
     #Main functions/app urls
     # Main Page - will query for cards and display
     @app.route('/')
     def index():
-        cards=getTrelloCards(trelloBoardID, key, token)
+        cards=getCards()
         if "sortAttr" in session:
+            attrKey=attrgetter(session.get('sortAttr'))
             cards=sorted(cards, key=attrgetter(session.get('sortAttr')))
         item_view_model= taskCards(cards)
         return render_template('index.html',viewModel=item_view_model)
@@ -42,9 +45,10 @@ def create_app():
         card_title=request.form.get('item_name')
         card_desc=request.form.get('item_desc')
         card_due=request.form.get('item_due')
+        card_lastActivity=datetime.datetime.utcnow()
         if not card_title == "": 
-            cardDetails={"idList":trelloBaseList,"name":card_title,"pos":"top","desc":card_desc,"due":card_due}
-            updateTrelloCard('', cardDetails, "POST", key, token) 
+            cardDetails={"status":defaultStatus,"name":card_title,"pos":"top","desc":card_desc,"due":card_due,"dateLastActivity":card_lastActivity}
+            updateCard(cardDetails, "POST") 
         return redirect("/")
 
     # Used to sort cards being displayed
@@ -61,52 +65,35 @@ def create_app():
     @app.route('/mark', methods=['POST'])
     def alter_item():
         newState=str(request.form.get('item_state'))
-        itemId=str(request.form.get('item_id'))
+        itemId=request.form.get('item_id')
 
-        #get valid states/ lists for cards to be in
-        trelloLists= {v: k for k, v in getTrelloLists(trelloBoardID, key, token).items()}
-        if newState in trelloLists.keys():
-            updateTrelloCard(itemId, {"idList":trelloLists[newState]}, "PUT", key, token)
+        updQuery={"_id":ObjectId(itemId)},{"$set":{"status":newState}}
+        updateCard(updQuery,"PUT")
+        
         return redirect("/")
 
     # Used to delete an item
     @app.route('/rem', methods=['POST'])
     def remove_item():
-        card_id=str(request.form.get('item_id'))
-        updateTrelloCard(card_id, {}, "DELETE", key, token)
+        card_id=ObjectId(request.form.get('item_id'))
+        updateCard({"_id":card_id},"DELETE")
         return redirect("/")
 
-    #Funtions to work with Trello cards
-    # Used to update an item
-    def updateTrelloCard (cardId, newState, method, key, token):
-        url='https://api.trello.com/1/cards/'+cardId+'?key='+key+'&token='+token
-        res=requestJson(method,url, newState)
-        return res
+    #Funtions to work with cards       
+    # Used to get the item cards from DB
+    def getCards():
+        cards=[]
+        for todoCard in todoCards.find():
+            cards.append(ToDoItem(todoCard))
 
-        
-    # Used to get the item cards from a given Trello board
-    def getTrelloCards(boardId, key, token):
-        cards=[]      
-        trelloLists=getTrelloLists(boardId, key, token)    
-        cardDict=getTrelloItems(boardId, 'cards', key, token)
-            
-        for card in cardDict:
-            cards.append(ToDoItem(trelloLists, card))
         return cards
 
-    # Used to get the board lists/states from a given Trello board
-    def getTrelloLists(boardId, key, token):
-        listDict=getTrelloItems(boardId, 'lists', key, token)
-        listMap={}
-        for list in listDict:
-            listMap[list["id"]]=list["name"]
-        return listMap
 
-    # used to get details regarding a boards cards/lists
-    def getTrelloItems(boardId, item, key, token):
-        url='https://api.trello.com/1/boards/'+boardId+'/'+item+'?key='+key+'&token='+token
-        res=requestJson("GET",url, {})
+    # Used to update an item
+    def updateCard (newState, method):
+        try: res=actionMap[method](newState)
+        except: res=actionMap[method](newState[0],newState[1])
+        
         return res
-
 
     return app
