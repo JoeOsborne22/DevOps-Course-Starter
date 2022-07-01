@@ -29,7 +29,10 @@ def test_index_page(client):
     response = client.get('/')
     responseCode = response.status_code
     responseHtml = response.data.decode()
-    assert responseCode == 200
+    #We have added a redirect so a status of 302 Found is still acceptable?
+    assert responseCode == 200 or responseCode == 302
+
+    #seems adding mockdata has not worked as expected so deprecating for now
     #assert "testDoingTask" in responseHtml
     #assert "testDoneTask" in responseHtml
     #assert "testDoingTask_UID:1548993486125" in responseHtml

@@ -46,6 +46,10 @@ def create_app():
         state = str(uuid.uuid4())
         session['state']=state
         url = f"https://github.com/login/oauth/authorize?client_id={os.getenv('OAUTH_CLIENT_ID')}&state={state}"
+
+        #If login is disabled for testing we can go straight to home page
+        if os.getenv('LOGIN_DISABLED')=='True':
+            return redirect("/")
         return redirect(url)
 
     #Route when user not authenticated
