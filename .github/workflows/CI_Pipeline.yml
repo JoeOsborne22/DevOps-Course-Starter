@@ -26,18 +26,18 @@ jobs:
     - run: docker build --target test --tag my-test-image .
     - run: docker run --env-file .env.test  my-test-image tests
     - run: docker run -e MONGO_DB_NAME=e2e_db -e MONGO_CONNECT=${{secrets.MONGO_CONNECT}} -e MONGO_COLLECTION_NAME=${{secrets.MONGO_COLLECTION_NAME}} -e MONGO_DEFAULT_STATUS=${{secrets.MONGO_DEFAULT_STATUS}} my-test-image tests_e2e
-#  deploy:
-#    name: Deploy build package to Heroku
-#    needs: build
-#    if: ${{ github.event_name ==  'push' }}
-#    runs-on: ubuntu-latest
-#    steps:
-#    - uses: actions/checkout@v2 # Adds a step to checkout the repository code
+  deploy:
+    name: Deploy build package to Heroku
+    needs: build
+    if: ${{ github.event_name ==  'push' }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2 # Adds a step to checkout the repository code
     #This action was used for simplicity and conciseness however this action has the inability to specify build options
-#    - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action 
-#      with:
-#        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-#        heroku_app_name: "joe-devops-project" #Must be unique in Heroku
-#        heroku_email: "josephbwo@hotmail.com"
-#        usedocker: true
+    - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action 
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "joe-devops-project" #Must be unique in Heroku
+        heroku_email: "josephbwo@hotmail.com"
+        usedocker: true
         
