@@ -19,13 +19,18 @@
         <td>{{item.title}}</td>
         <td><span {% if (item.duePast) and not ((item.status == 'Completed') or (item.status == 'Done'))%} style="background-color:#ff5959" {% endif %}>{{item.due}}</span></td>
         <td><span {% if (item.status == 'Completed') or (item.status == 'Done') %} style="background-color:#00FF00" {% elif item.status == 'To Do' %} style="background-color:#ff5959" {% else %} style="background-color:#fcff59" {% endif %}>{{item.status}}</span></td>
-        <td><form action="/mark">
+        <td>
+        {% if edit %}
+          <form action="/mark">
           <button class="btn btn-warning" type="submit" formmethod="post" formaction="/mark" value="Doing" name="item_state" >In Progress</button>
           <button class="btn btn-success" type="submit" formmethod="post" formaction="/mark" value="Done" name="item_state" >Complete</button>
           <button class="btn btn-primary" type="submit" formmethod="post" formaction="/mark" value="To Do" name="item_state" >To Do</button>
           <button class="btn btn-danger" type="submit" formmethod="post" formaction="/rem" value="Delete" name="item_state">Remove</button>
-          <input type="hidden" name="item_id" value="{{item.id}}"><br><br></td>
+          <input type="hidden" name="item_id" value="{{item.id}}"><br><br>
+        {% endif %}
+        </td>  
         </form>
+        
       </tr>
   {% endfor %} 
 </table><br>
@@ -49,7 +54,9 @@
               <input class="form-control form-control-lg border-10 add-todo-input bg-transparent rounded da" type="date" placeholder="Due date .."id="idue" name="item_due">
           </div>
           <div class="col-auto px-0 mx-0 mr-2">
+            {% if edit %}
               <button type="submit" class="btn btn-primary" formmethod="post" id="subBttn">Add</button>
+              {% endif %}
           </div>
         </form>
         </div>

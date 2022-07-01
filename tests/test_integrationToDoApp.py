@@ -52,19 +52,19 @@ def addMockData():
 responseCardsStub = [
             {
                 "name": "testDoTask_UID:1548993486146",
-                "status": "To Do",
+                "idList": "To Do",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             },
             {
                 "name": "testDoingTask_UID:1548993486125",
-                "status": "Doing",
+                "idList": "Doing",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             },
             {
                 "name": "testDoneTask_UID:1548993486114",
-                "status": "Done",
+                "idList": "Done",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             }
