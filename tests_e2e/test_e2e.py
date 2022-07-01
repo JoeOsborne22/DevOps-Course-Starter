@@ -15,21 +15,10 @@ def requestJson (method, url, args):
     return r.json()
     
     
-#Function to create trello board
-def createTrelloBoard(boardName):
-    url='https://api.trello.com/1/boards/'
-    params={
-            'key': os.getenv('TRELLO_KEY'),
-            'token': os.getenv('TRELLO_TOKEN'),
-            'name': boardName
-        }
-    
-    res=requestJson("POST",url, params)
-    return res
 
 
 #Function to remove selenium table
-def deleteTrelloBoard():
+def deleteBoard():
     client=pymongo.MongoClient(str(os.getenv('MONGO_CONNECT')))
     db = client[os.getenv('MONGO_DB_NAME')]
     db[str(os.getenv('MONGO_TABLE_NAME'))].drop()
@@ -56,7 +45,7 @@ def app_with_temp_board():
     
     # Tear Down
     thread.join(1)
-    deleteTrelloBoard()
+    deleteBoard()
 
 
 @pytest.fixture(scope='module')

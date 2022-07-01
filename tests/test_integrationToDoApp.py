@@ -38,7 +38,7 @@ def test_index_page(client):
 def addMockData():
 
     mongoDB=os.getenv('MONGO_DB_NAME')
-    mongoTable=os.getenv('MONGO_TABLE_NAME')
+    mongoTable=os.getenv('MONGO_COLLECTION_NAME')
     mongoConnection=os.getenv('MONGO_CONNECT')
     client=pymongo.MongoClient(str(mongoConnection))
     db = client[mongoDB]
@@ -52,19 +52,19 @@ def addMockData():
 responseCardsStub = [
             {
                 "name": "testDoTask_UID:1548993486146",
-                "idList": "To Do",
+                "status": "To Do",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             },
             {
                 "name": "testDoingTask_UID:1548993486125",
-                "idList": "Doing",
+                "status": "Doing",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             },
             {
                 "name": "testDoneTask_UID:1548993486114",
-                "idList": "Done",
+                "status": "Done",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             }

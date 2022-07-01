@@ -32,7 +32,7 @@ def create_app():
     # Main Page - will query for cards and display
     @app.route('/')
     def index():
-        cards=getTrelloCards()
+        cards=getCards()
         if "sortAttr" in session:
             attrKey=attrgetter(session.get('sortAttr'))
             cards=sorted(cards, key=attrgetter(session.get('sortAttr')))
@@ -47,8 +47,8 @@ def create_app():
         card_due=request.form.get('item_due')
         card_lastActivity=datetime.datetime.utcnow()
         if not card_title == "": 
-            cardDetails={"idList":defaultStatus,"name":card_title,"pos":"top","desc":card_desc,"due":card_due,"dateLastActivity":card_lastActivity}
-            updateTrelloCard(cardDetails, "POST") 
+            cardDetails={"status":defaultStatus,"name":card_title,"pos":"top","desc":card_desc,"due":card_due,"dateLastActivity":card_lastActivity}
+            updateCard(cardDetails, "POST") 
         return redirect("/")
 
     # Used to sort cards being displayed
@@ -67,8 +67,8 @@ def create_app():
         newState=str(request.form.get('item_state'))
         itemId=request.form.get('item_id')
 
-        updQuery={"_id":ObjectId(itemId)},{"$set":{"idList":newState}}
-        updateTrelloCard(updQuery,"PUT")
+        updQuery={"_id":ObjectId(itemId)},{"$set":{"status":newState}}
+        updateCard(updQuery,"PUT")
         
         return redirect("/")
 
@@ -76,12 +76,12 @@ def create_app():
     @app.route('/rem', methods=['POST'])
     def remove_item():
         card_id=ObjectId(request.form.get('item_id'))
-        updateTrelloCard({"_id":card_id},"DELETE")
+        updateCard({"_id":card_id},"DELETE")
         return redirect("/")
 
     #Funtions to work with cards       
     # Used to get the item cards from DB
-    def getTrelloCards():
+    def getCards():
         cards=[]
         for todoCard in todoCards.find():
             cards.append(ToDoItem(todoCard))
@@ -90,7 +90,7 @@ def create_app():
 
 
     # Used to update an item
-    def updateTrelloCard (newState, method):
+    def updateCard (newState, method):
         try: res=actionMap[method](newState)
         except: res=actionMap[method](newState[0],newState[1])
         
