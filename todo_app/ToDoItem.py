@@ -10,10 +10,9 @@ class ToDoItem:
                 self.id = json["id"]
         except KeyError:
                 self.id = json["_id"]
-
-        self.status = json["status"]
+        self.status = json["idList"]
         self.title = json["name"]
-        self.statusId = json["status"]
+        self.statusId = json["idList"]
         self.due = json["due"]
         self.lastModified = json["dateLastActivity"]
         

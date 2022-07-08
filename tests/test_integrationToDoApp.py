@@ -29,16 +29,19 @@ def test_index_page(client):
     response = client.get('/')
     responseCode = response.status_code
     responseHtml = response.data.decode()
+    #We have added a redirect so a status of 302 Found is still acceptable?
     assert responseCode == 200
-    #assert "testDoingTask" in responseHtml
-    #assert "testDoneTask" in responseHtml
-    #assert "testDoingTask_UID:1548993486125" in responseHtml
+
+    #seems adding mockdata has not worked as expected so deprecating for now
+    assert "testDoingTask" in responseHtml
+    assert "testDoneTask" in responseHtml
+    assert "testDoingTask_UID:1548993486125" in responseHtml
 
 
 def addMockData():
 
     mongoDB=os.getenv('MONGO_DB_NAME')
-    mongoTable=os.getenv('MONGO_COLLECTION_NAME')
+    mongoTable=os.getenv('MONGO_TABLE_NAME')
     mongoConnection=os.getenv('MONGO_CONNECT')
     client=pymongo.MongoClient(str(mongoConnection))
     db = client[mongoDB]
@@ -52,19 +55,19 @@ def addMockData():
 responseCardsStub = [
             {
                 "name": "testDoTask_UID:1548993486146",
-                "status": "To Do",
+                "idList": "To Do",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             },
             {
                 "name": "testDoingTask_UID:1548993486125",
-                "status": "Doing",
+                "idList": "Doing",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             },
             {
                 "name": "testDoneTask_UID:1548993486114",
-                "status": "Done",
+                "idList": "Done",
                 "due": None,
                 "dateLastActivity": "2021-08-20T00:00:00.000Z"
             }

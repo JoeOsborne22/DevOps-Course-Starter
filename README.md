@@ -108,3 +108,8 @@ docker run --env-file .env my-test-image tests_e2e
 ## Note as of 2022.03.11(exercise 9) integration with Trello has been terminated and instead replaced with MongoDB
 This app now uses a MongoDB connection and will need the necessary environment variable set up for integration with this form of database.
 Signup to MongoDB: https://www.mongodb.com/try
+
+
+## As of 2022.07.01(ecercise 10) Authentication and Authorisation has been implemented. 
+This will require users to authenticate via GitHub and then certain 'read', 'edit' permissions will be given per user ID. Default is 'read' access. 
+
