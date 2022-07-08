@@ -28,7 +28,6 @@ def deleteBoard():
 def app_with_temp_board():
     # Load dotenv file before being used/referenced
     file_path = find_dotenv('.env')
-    os.environ['LOGIN_DISABLED'] = 'True'
     load_dotenv(file_path, override=True)
 
     # Create & update the test DB environment variable, this will create a new board

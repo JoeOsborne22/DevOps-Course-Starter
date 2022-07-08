@@ -30,18 +30,18 @@ def test_index_page(client):
     responseCode = response.status_code
     responseHtml = response.data.decode()
     #We have added a redirect so a status of 302 Found is still acceptable?
-    assert responseCode == 200 or responseCode == 302
+    assert responseCode == 200
 
     #seems adding mockdata has not worked as expected so deprecating for now
-    #assert "testDoingTask" in responseHtml
-    #assert "testDoneTask" in responseHtml
-    #assert "testDoingTask_UID:1548993486125" in responseHtml
+    assert "testDoingTask" in responseHtml
+    assert "testDoneTask" in responseHtml
+    assert "testDoingTask_UID:1548993486125" in responseHtml
 
 
 def addMockData():
 
     mongoDB=os.getenv('MONGO_DB_NAME')
-    mongoTable=os.getenv('MONGO_COLLECTION_NAME')
+    mongoTable=os.getenv('MONGO_TABLE_NAME')
     mongoConnection=os.getenv('MONGO_CONNECT')
     client=pymongo.MongoClient(str(mongoConnection))
     db = client[mongoDB]

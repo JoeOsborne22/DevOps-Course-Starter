@@ -17,7 +17,7 @@ from functools import wraps
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config())
-    #app.secret_key=os.getenv('TODO_APP_SECRET_KEY')
+    app.config['LOGIN_DISABLED']=os.getenv('LOGIN_DISABLED') == "True"
 
     # Set app variables
     #Setting up connection to MongoDB
@@ -47,9 +47,6 @@ def create_app():
         session['state']=state
         url = f"https://github.com/login/oauth/authorize?client_id={os.getenv('OAUTH_CLIENT_ID')}&state={state}"
 
-        #If login is disabled for testing we can go straight to home page
-        if os.getenv('LOGIN_DISABLED')=='True':
-            return redirect("/")
         return redirect(url)
 
     #Route when user not authenticated
@@ -96,15 +93,13 @@ def create_app():
         @wraps(func)
         def wrapper_write_check(*args, **kwargs):
             
-            allowed = False
+            allowed = os.getenv('LOGIN_DISABLED')=='True' or user.role == "edit"
             user = flask_login.current_user
             
-            if os.getenv('LOGIN_DISABLED')=='True' or user.role == "edit":
-                allowed = True
             if allowed:
                 return func(*args, **kwargs)
             else:
-                return render_template('unauthorised.html')
+                return render_template('unauthorised.html'),401
         return wrapper_write_check
 
     #Main functions/app urls
