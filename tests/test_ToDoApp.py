@@ -10,12 +10,12 @@ statusList = ['To Do','Doing','Done','Test']
 def test_items_category_split():
 	
 	items = [
-		ToDoItem({'id':1, 'status':statusList[0],'name':'task 1','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':2, 'status':statusList[1],'name':'task 2','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':3, 'status':statusList[2],'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':4, 'status':statusList[3],'name':'task 4','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':5, 'status':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':6, 'status':statusList[1],'name':'task 6','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"})
+		ToDoItem({'id':1, 'idList':statusList[0],'name':'task 1','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':2, 'idList':statusList[1],'name':'task 2','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':3, 'idList':statusList[2],'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':4, 'idList':statusList[3],'name':'task 4','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':5, 'idList':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':6, 'idList':statusList[1],'name':'task 6','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"})
 	]	
 
 	view = taskCards(items)
@@ -41,7 +41,7 @@ def test_items_category_split():
 
 def test_no_matching_status():
     
-    items = [ToDoItem({'id':1, 'status':statusList[3],'name':'task 1','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"})]
+    items = [ToDoItem({'id':1, 'idList':statusList[3],'name':'task 1','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"})]
     view = taskCards(items)
     assert len(view.todo_items) == 0
     assert len(view.doing_items) == 0
@@ -49,10 +49,10 @@ def test_no_matching_status():
 
 def test_show_all_done():
 	items = [
-		ToDoItem({'id':1, 'status':statusList[0],'name':'task 1','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':2, 'status':statusList[1],'name':'task 2','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':3, 'status':statusList[2],'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':5, 'status':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"})
+		ToDoItem({'id':1, 'idList':statusList[0],'name':'task 1','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':2, 'idList':statusList[1],'name':'task 2','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':3, 'idList':statusList[2],'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':5, 'idList':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"})
 	]	
 	view = taskCards(items)
 	assert view.should_show_all_done_items is True
@@ -60,14 +60,14 @@ def test_show_all_done():
 
 def test_not_show_all_done_if_more_than_three():
 	items = [
-		ToDoItem({'id':1, 'status':statusList[0],'name':'task 1','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':2, 'status':statusList[1],'name':'task 2','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':3, 'status':statusList[2],'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':5, 'status':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':6, 'status':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':7, 'status':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':8, 'status':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
-		ToDoItem({'id':9, 'status':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':1, 'idList':statusList[0],'name':'task 1','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':2, 'idList':statusList[1],'name':'task 2','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':3, 'idList':statusList[2],'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':5, 'idList':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':6, 'idList':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':7, 'idList':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':8, 'idList':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
+		ToDoItem({'id':9, 'idList':statusList[2],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-20T00:00:00.000Z"}),
 
 	]	
 	view = taskCards(items)
@@ -79,10 +79,10 @@ def test_recent_done_items_done_today():
 	dt_string = str(now.strftime("%Y-%m-%d"))
 	active=dt_string+"T00:00:00.000Z"
 	items = [
-		ToDoItem({'id':3, 'status':statusList[2],'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active}),
-		ToDoItem({'id':4, 'status':statusList[2],'name':'task 4','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-19T00:00:00.000Z"}),
-		ToDoItem({'id':5, 'status':statusList[1],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active}),
-		ToDoItem({'id':6, 'status':statusList[0],'name':'task 6','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active})
+		ToDoItem({'id':3, 'idList':statusList[2],'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active}),
+		ToDoItem({'id':4, 'idList':statusList[2],'name':'task 4','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-19T00:00:00.000Z"}),
+		ToDoItem({'id':5, 'idList':statusList[1],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active}),
+		ToDoItem({'id':6, 'idList':statusList[0],'name':'task 6','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active})
 	]	
 	view = taskCards(items)
 	#Extract the id's of our objects for comparison
@@ -97,10 +97,10 @@ def test_older_done_items_no_items_today():
 	dt_string = str(now.strftime("%Y-%m-%d"))
 	active=dt_string+"T00:00:00.000Z"
 	items = [
-		ToDoItem({'id':3, 'status':statusList[2],'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active}),
-		ToDoItem({'id':4, 'status':statusList[2],'name':'task 4','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-19T00:00:00.000Z"}),
-		ToDoItem({'id':5, 'status':statusList[1],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active}),
-		ToDoItem({'id':6, 'status':statusList[0],'name':'task 6','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active})
+		ToDoItem({'id':3, 'idList':statusList[2],'name':'task 3','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active}),
+		ToDoItem({'id':4, 'idList':statusList[2],'name':'task 4','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':"2021-08-19T00:00:00.000Z"}),
+		ToDoItem({'id':5, 'idList':statusList[1],'name':'task 5','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active}),
+		ToDoItem({'id':6, 'idList':statusList[0],'name':'task 6','due':"2021-08-27T00:00:00.000Z",'dateLastActivity':active})
 	]	
 	view = taskCards(items)
 	#Extract the id's of our objects for comparison

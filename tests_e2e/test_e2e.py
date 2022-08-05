@@ -32,6 +32,7 @@ def app_with_temp_board():
 
     # Create & update the test DB environment variable, this will create a new board
     os.environ['MONGO_TABLE_NAME'] = 'Selenium_Test_Board'
+    os.environ['LOGIN_DISABLED'] = 'True'
     
     # construct the new application
     app = create_app()
