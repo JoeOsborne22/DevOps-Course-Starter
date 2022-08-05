@@ -32,10 +32,6 @@ jobs:
     runs-on: ubunto-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - run: docker build --target production --tag joeosbo/devopsproj/todo_app:latest
     - run: docker push joeosbo/devopsproj/todo_app --all-tags
 ##Commenting out as still causing issues
