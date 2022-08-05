@@ -93,8 +93,9 @@ def create_app():
         @wraps(func)
         def wrapper_write_check(*args, **kwargs):
             
-            allowed = os.getenv('LOGIN_DISABLED')=='True' or user.role == "edit"
             user = flask_login.current_user
+            allowed = os.getenv('LOGIN_DISABLED')=='True' or user.role == "edit"
+            
             
             if allowed:
                 return func(*args, **kwargs)
