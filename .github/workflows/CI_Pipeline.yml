@@ -27,7 +27,7 @@ jobs:
     - run: docker run --env-file .env.test  my-test-image tests
     - run: docker run -e SECRET_KEY=secret -e MONGO_DB_NAME=e2e_db -e MONGO_CONNECT=${{secrets.MONGO_CONNECT}} -e MONGO_COLLECTION_NAME=${{secrets.MONGO_COLLECTION_NAME}} -e MONGO_DEFAULT_STATUS=${{secrets.MONGO_DEFAULT_STATUS}} my-test-image tests_e2e
   publish:
-    name: Push Image to docker hub
+    name: Push Image to dockerhub
     needs: build
     runs-on: ubunto-latest
     steps:
