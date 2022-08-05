@@ -35,11 +35,11 @@ jobs:
     - run: docker build --target production --tag joeosbo/devopsproj/todo_app:latest
     - run: docker push joeosbo/devopsproj/todo_app --all-tags
 ##Commenting out as still causing issues
-  deploy:
-    name: Deploy build package to Azure
-    needs: publish
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2 # Adds a step to checkout the repository code
-    - uses: curl -dH -X POST ${{ secrets.AZURE_WEBHOOK }}
+#  deploy:
+#    name: Deploy build package to Azure
+#    needs: publish
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2 # Adds a step to checkout the repository code
+#    - uses: curl -dH -X POST ${{ secrets.AZURE_WEBHOOK }}
    
