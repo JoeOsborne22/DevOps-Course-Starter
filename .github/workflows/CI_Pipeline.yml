@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: docker/login-action@v1
+    - uses: docker/login-action@v2
       with:
         username: ${{secrets.DOCKERHUB_USERNAME}}
         password: ${{secrets.DOCKERHUB_TOKEN}}
@@ -46,4 +46,3 @@ jobs:
 #    steps:
 #    - uses: actions/checkout@v2 # Adds a step to checkout the repository code
 #    - uses: curl -dH -X POST ${{ secrets.AZURE_WEBHOOK }}
-   
