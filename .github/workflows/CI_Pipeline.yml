@@ -36,7 +36,7 @@ jobs:
       with:
         username: ${{secrets.DOCKERHUB_USERNAME}}
         password: ${{secrets.DOCKERHUB_TOKEN}}
-    - run: docker build --target production --tag joeosbo/devopsproj/todo_app:latest
+    - run: docker build --target production --tag my-prod-image .
     - run: docker push joeosbo/devopsproj/todo_app --all-tags
 ##Commenting out as still causing issues
 #  deploy:
