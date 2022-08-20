@@ -44,11 +44,4 @@ jobs:
         username: ${{secrets.DOCKERHUB_USERNAME}}
         password: ${{secrets.DOCKERHUB_TOKEN}}
     - run: docker push joeosbo/devopsproj:todo_app 
-##Commenting out as still causing issues
-#  deploy:
-#    name: Deploy build package to Azure
-#    needs: publish
-#    runs-on: ubuntu-latest
-#    steps:
-#    - uses: actions/checkout@v2 # Adds a step to checkout the repository code
-#    - uses: curl -dH -X POST ${{ secrets.AZURE_WEBHOOK }}
+    - run: curl -dH -X POST ${{secrets.AZURE_WEBHOOK}}
