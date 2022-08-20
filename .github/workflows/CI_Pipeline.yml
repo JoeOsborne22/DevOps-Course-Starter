@@ -37,13 +37,13 @@ jobs:
       with:
         username: ${{secrets.DOCKERHUB_USERNAME}}
         password: ${{secrets.DOCKERHUB_TOKEN}}
-    - run: docker build --target production --tag joeosbo/devopsproj/todo_app:latest .    
+    - run: docker build --target production --tag joeosbo/devopsproj:todo_app .    
     - run: docker logout
     - uses: docker/login-action@v2
       with:
         username: ${{secrets.DOCKERHUB_USERNAME}}
         password: ${{secrets.DOCKERHUB_TOKEN}}
-    - run: docker push joeosbo/devopsproj/todo_app --all-tags
+    - run: docker push joeosbo/devopsproj:todo_app 
 ##Commenting out as still causing issues
 #  deploy:
 #    name: Deploy build package to Azure
