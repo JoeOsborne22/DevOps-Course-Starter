@@ -26,6 +26,8 @@ jobs:
     - run: docker build --target test --tag my-test-image .
     - run: docker run --env-file .env.test  my-test-image tests
     - run: docker run -e SECRET_KEY=secret -e MONGO_DB_NAME=e2e_db -e MONGO_CONNECT=${{secrets.MONGO_CONNECT}} -e MONGO_COLLECTION_NAME=${{secrets.MONGO_COLLECTION_NAME}} -e MONGO_DEFAULT_STATUS=${{secrets.MONGO_DEFAULT_STATUS}} my-test-image tests_e2e
+    - run: docker build --target production --tag joeosbo/devopsproj/todo_app:latest .
+    - run: docker logout
   publish:
     name: Push Image to dockerhub
     needs: build
@@ -36,7 +38,6 @@ jobs:
       with:
         username: ${{secrets.DOCKERHUB_USERNAME}}
         password: ${{secrets.DOCKERHUB_TOKEN}}
-    - run: docker build --target production --tag joeosbo/devopsproj/todo_app:latest .
     - run: docker push joeosbo/devopsproj/todo_app --all-tags
 ##Commenting out as still causing issues
 #  deploy:
