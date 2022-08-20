@@ -113,3 +113,5 @@ Signup to MongoDB: https://www.mongodb.com/try
 ## As of 2022.07.01(ecercise 10) Authentication and Authorisation has been implemented. 
 This will require users to authenticate via GitHub and then certain 'read', 'edit' permissions will be given per user ID. Default is 'read' access. 
 
+## As of 2022.08.05(ecercise 11) The application is now hosted on Azure
+This connectivity has also been added to the CI/CD pipeline to ensure the latest docker image is uploaded and then pulled and deployed to Azure.
